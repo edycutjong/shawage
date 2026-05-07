@@ -1,12 +1,12 @@
 import { KeyPair, RandomNumber } from '@umbracash/umbra-js';
 import { ethers } from 'ethers';
 
-// MOCK CONSTANTS FOR DEMO PURPOSES
+// Demo wallet constants
 // In a real application, the receiver's public key is fetched from the Umbra StealthKeyRegistry or ENS
-export const MOCK_RECEIVER_PRIVATE_KEY = '0x1234567890123456789012345678901234567890123456789012345678901234';
-const mockWallet = new ethers.Wallet(MOCK_RECEIVER_PRIVATE_KEY);
-export const MOCK_RECEIVER_PUBKEY = mockWallet.publicKey; // Uncompressed public key
-export const MOCK_RECEIVER_ADDRESS = mockWallet.address;
+export const DEMO_RECEIVER_PRIVATE_KEY = '0x1234567890123456789012345678901234567890123456789012345678901234';
+const demoWallet = new ethers.Wallet(DEMO_RECEIVER_PRIVATE_KEY);
+export const DEMO_RECEIVER_PUBKEY = mockWallet.publicKey; // Uncompressed public key
+export const DEMO_RECEIVER_ADDRESS = mockWallet.address;
 
 export interface StealthTransfer {
   employeeId: string;
@@ -23,7 +23,7 @@ export interface StealthTransfer {
  */
 export function generateStealthTransfer(employeeId: string, amount: string): StealthTransfer {
   // 1. Initialize receiver's KeyPair from their public key
-  const recipientKeyPair = new KeyPair(MOCK_RECEIVER_PUBKEY);
+  const recipientKeyPair = new KeyPair(DEMO_RECEIVER_PUBKEY);
 
   // 2. Generate 32 bytes of secure random entropy (handled internally by RandomNumber)
   const randomNumber = new RandomNumber();
@@ -57,7 +57,7 @@ export function simulateAuditorDecryption(transfer: StealthTransfer) {
   return {
     verifiedEmployee: transfer.employeeId,
     verifiedAmount: transfer.amount,
-    trueReceiverAddress: MOCK_RECEIVER_ADDRESS,
+    trueReceiverAddress: DEMO_RECEIVER_ADDRESS,
     isAuthorized: true
   };
 }

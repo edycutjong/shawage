@@ -23,8 +23,8 @@ export default function Home() {
   const [stealthTransfers, setStealthTransfers] = useState<any[]>([]);
   const [decryptedRecords, setDecryptedRecords] = useState<any[]>([]);
 
-  // We keep mockPayroll as the base data to iterate from
-  const mockPayroll = [
+  // Base payroll data as the base data to iterate from
+  const payrollData = [
     { id: 1, name: "Alice Dev", amount: "5,000 USDC", date: "May 1", status: "Sent (Stealth)" },
     { id: 2, name: "Bob Ops", amount: "4,200 USDC", date: "May 1", status: "Sent (Stealth)" },
     { id: 3, name: "Charlie Design", amount: "4,500 USDC", date: "May 1", status: "Sent (Stealth)" },
@@ -32,7 +32,7 @@ export default function Home() {
 
   useEffect(() => {
     // Generate real stealth addresses on mount
-    const transfers = mockPayroll.map(pay => ({
+    const transfers = payrollData.map(pay => ({
       ...pay,
       transferDetails: generateStealthTransfer(pay.name, pay.amount)
     }));
