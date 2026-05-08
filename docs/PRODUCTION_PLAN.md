@@ -21,11 +21,11 @@
 - Viewing Key decrypts sample payroll
 
 ## Pre-Submission Checklist
-- [ ] Batch stealth transfer works (5 recipients)
-- [ ] Viewing Key decrypts payroll table
-- [ ] Split-screen explorer proof shows ciphertext
-- [ ] Employee view decodes incoming payment
-- [ ] PDF audit report generates
-- [ ] Demo video recorded (< 3 min)
-- [ ] bench.py latency results included
-- [ ] README with architecture diagram
+- [x] Batch stealth transfer works (5 recipients)
+- [x] Viewing Key decrypts payroll table
+- [x] Split-screen explorer proof shows ciphertext
+- [x] Employee view decodes incoming payment
+- [x] PDF audit report generates
+- [x] Demo video recorded (< 3 min)
+- [x] bench.py latency results included
+- [x] README with architecture diagram
