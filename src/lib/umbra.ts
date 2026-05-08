@@ -5,8 +5,8 @@ import { ethers } from 'ethers';
 // In a real application, the receiver's public key is fetched from the Umbra StealthKeyRegistry or ENS
 export const DEMO_RECEIVER_PRIVATE_KEY = '0x1234567890123456789012345678901234567890123456789012345678901234';
 const demoWallet = new ethers.Wallet(DEMO_RECEIVER_PRIVATE_KEY);
-export const DEMO_RECEIVER_PUBKEY = mockWallet.publicKey; // Uncompressed public key
-export const DEMO_RECEIVER_ADDRESS = mockWallet.address;
+export const DEMO_RECEIVER_PUBKEY = demoWallet.publicKey; // Uncompressed public key
+export const DEMO_RECEIVER_ADDRESS = demoWallet.address;
 
 export interface StealthTransfer {
   employeeId: string;
@@ -46,13 +46,18 @@ export function generateStealthTransfer(employeeId: string, amount: string): Ste
 /**
  * Simulates an auditor using a Viewing Key to decrypt the stealth transfer payload.
  * @param transfer The stealth transfer record
+ * @param viewingKey The viewing key provided by the auditor
  * @returns Decrypted details linking the stealth address back to the employee
  */
-export function simulateAuditorDecryption(transfer: StealthTransfer) {
+export function simulateAuditorDecryption(transfer: StealthTransfer, viewingKey: string) {
   // In a real Umbra audit scenario, the Viewing Key (which is the recipient's private view key)
   // is used to decrypt the payload, retrieve the random number, and verify that 
   // receiverPrivateKey * randomNumber == stealthPrivateKey, linking the address.
   
+  if (viewingKey !== "UMBRA-VIEW-KEY-2026") {
+    throw new Error("Invalid Viewing Key");
+  }
+
   // For the simulation, we'll just return the true linkage to prove the Viewing Key concept.
   return {
     verifiedEmployee: transfer.employeeId,
