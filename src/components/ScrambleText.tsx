@@ -10,6 +10,8 @@ interface ScrambleTextProps {
   onComplete?: () => void;
 }
 
+const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}|:<>?-=[]\\;',./";
+
 export function ScrambleText({
   text,
   trigger,
@@ -18,15 +20,14 @@ export function ScrambleText({
   onComplete,
 }: ScrambleTextProps) {
   const [displayText, setDisplayText] = useState(trigger ? "" : text);
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}|:<>?-=[]\\;',./";
 
   useEffect(() => {
     if (!trigger) {
-      setDisplayText(text);
-      return;
+      const timer = setTimeout(() => setDisplayText(text), 0);
+      return () => clearTimeout(timer);
     }
 
-    let start = Date.now();
+    const start = Date.now();
     let frameId: number;
 
     const animate = () => {
@@ -64,7 +65,7 @@ export function ScrambleText({
     frameId = requestAnimationFrame(animate);
 
     return () => cancelAnimationFrame(frameId);
-  }, [trigger, text, duration, onComplete, chars]);
+  }, [trigger, text, duration, onComplete]);
 
   return <span className={className}>{displayText}</span>;
 }

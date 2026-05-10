@@ -26,7 +26,9 @@ export default function Home() {
   const [viewingKey, setViewingKey] = useState("");
   const [isDecrypted, setIsDecrypted] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [stealthTransfers, setStealthTransfers] = useState<any[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [decryptedRecords, setDecryptedRecords] = useState<any[]>([]);
   const [auditError, setAuditError] = useState("");
   const [employeeDecrypted, setEmployeeDecrypted] = useState(false);
@@ -43,11 +45,14 @@ export default function Home() {
 
   useEffect(() => {
     // Generate real stealth addresses on mount
-    const transfers = payrollData.map(pay => ({
-      ...pay,
-      transferDetails: generateStealthTransfer(pay.name, pay.amount)
-    }));
-    setStealthTransfers(transfers);
+    const timer = setTimeout(() => {
+      const transfers = payrollData.map(pay => ({
+        ...pay,
+        transferDetails: generateStealthTransfer(pay.name, pay.amount)
+      }));
+      setStealthTransfers(transfers);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleAudit = () => {
@@ -61,8 +66,8 @@ export default function Home() {
         }));
         setDecryptedRecords(decrypted);
         setIsDecrypted(true);
-      } catch (err: any) {
-        setAuditError(err.message || "Invalid Viewing Key");
+      } catch (err: unknown) {
+        setAuditError((err as Error).message || "Invalid Viewing Key");
       } finally {
         setIsProcessing(false);
       }
@@ -100,6 +105,7 @@ export default function Home() {
             {["employer", "employee", "audit", "proof"].map((tab) => (
               <button
                 key={tab}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 onClick={() => setActiveTab(tab as any)}
                 className={`rounded-md px-3 py-1.5 text-sm font-medium capitalize transition-all duration-300 ${
                   activeTab === tab 
@@ -290,7 +296,7 @@ export default function Home() {
                               <td className="px-5 py-4 font-medium text-white print:text-black">{pay.audit.verifiedEmployee}</td>
                               <td className="px-5 py-4 font-mono text-secondary-400 print:text-black">{pay.audit.verifiedAmount}</td>
                               <td className="px-5 py-4 font-mono text-xs text-slate-500 print:text-gray-600" title={pay.transferDetails.stealthAddress}>
-                                <ScrambleText text={`${pay.transferDetails.stealthAddress.substring(0, 14)}...${pay.transferDetails.stealthAddress.substring(34)}`} trigger={true} duration={1000 + Math.random() * 1000} />
+                                <ScrambleText text={`${pay.transferDetails.stealthAddress.substring(0, 14)}...${pay.transferDetails.stealthAddress.substring(34)}`} trigger={true} duration={1000 + (pay.id * 150)} />
                               </td>
                               <td className="px-5 py-4">
                                 <span className="inline-flex items-center gap-1.5 rounded-full bg-success/10 px-2.5 py-1 text-xs font-medium text-success border border-success/20 print:border-none print:bg-transparent">
